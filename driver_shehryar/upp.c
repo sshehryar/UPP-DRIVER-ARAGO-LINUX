@@ -106,7 +106,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //MODIFIED BY: SHEHRYAR ---> Pg 888 General-Purpose Input/Output (GPIO) SPRUH82A–December 2011. Added 25-Nov-2014			
 																	
-#define GPIO_Base       0x01E26000
+#define DA850_GPIO_BASE       0x01E26000
 													
 
 //MODIFIED BY: SHEHRYAR. Offsets from GPIO_Base (SPRS653C.PDF TABLE 5-134)
@@ -120,7 +120,7 @@ static void *rxBuf;
 static void __iomem *pinmux_base = 0;
 static void __iomem *upp_base    = 0;
 static void __iomem *psc1_base   = 0;
-
+static void __iomem *gpio_base   = 0;
 
 static DECLARE_WAIT_QUEUE_HEAD(read_queue);
 static int read_pending = 0;
@@ -583,9 +583,9 @@ static void setpin_GPIO (void)
 {
 
 	int32_t reg_val;
-	reg_val = ioread32(GPIO_Base + SET_DATA67);
+	reg_val = ioread32(gpio_base + SET_DATA67);
 	reg_val |= (1<<6); ///Set Pin 6 of Bank 6 GP6P6 to 1 to drive GPIO high
-	iowrite32(reg_val,GPIO_Base + SET_DATA67);
+	iowrite32(reg_val,gpio_base + SET_DATA67);
 	
 
 	
@@ -594,33 +594,36 @@ static void setpin_GPIO (void)
 static void clrpin_GPIO(void){
 
 	int32_t reg_val;
-	reg_val = ioread32(GPIO_Base + CLR_DATA67);
+	reg_val = ioread32(gpio_base + CLR_DATA67);
 	reg_val |= (1<<6); //Set Pin 6 of bank 6 GP6P5 of CLR_DATA67 Register to High to drive GPIO signals low
-	iowrite32(reg_val,GPIO_Base + CLR_DATA67);
+	iowrite32(reg_val,gpio_base + CLR_DATA67);
 }
 ///////Function to set DIR to 1 for GP6P5
 
 static void Config_GPIO(void){
+
+	gpio_base = ioremap(DA850_GPIO_BASE, SZ_4K);
+	
 //set dir 
 	int32_t reg_val;
-	reg_val = ioread32(GPIO_Base + DIR67);
+	reg_val = ioread32(gpio_base + DIR67);
 	reg_val &= ~(1<<0); 
 	reg_val &= ~(1<<1);
 	reg_val &= ~(1<<2);
 	reg_val &= ~(1<<3);
 	reg_val &= ~(1<<4);
 	reg_val &= ~(1<<6);
-	iowrite32(reg_val,GPIO_Base + DIR67);
+	iowrite32(reg_val,gpio_base + DIR67);
 //set to high
 
-	reg_val = ioread32(GPIO_Base + SET_DATA67);
+	reg_val = ioread32(gpio_base + SET_DATA67);
 	reg_val |= (1<<0); 
 	reg_val |= (1<<1);
 	reg_val |= (1<<2);
 	reg_val |= (1<<3);
 	reg_val |= (1<<4);
 	reg_val |= (1<<6);
-	iowrite32(reg_val,GPIO_Base + SET_DATA67);
+	iowrite32(reg_val,gpio_base + SET_DATA67);
 
 
 }
