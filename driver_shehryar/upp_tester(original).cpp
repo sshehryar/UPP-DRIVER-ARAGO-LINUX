@@ -30,7 +30,7 @@ int main(int argc, char **argv )
 	if( argc>1 )
 		ctr_ofst = atoi(argv[1]);
 		
-	char buff[256] = {0,};
+	char buff[8200] = {0,};
 	int ctr = ctr_ofst*256;
 	while( strlen(buff)<8192 )
 	{
@@ -67,11 +67,12 @@ int main(int argc, char **argv )
 	int i=0;
 	for( i=0 ; i<1024 ; i+= 256 )
 	{
-		bytesWritten = write( upp_fd, buff+i, 256 );
+		//bytesWritten = write( upp_fd, buff+i, 256 );
+		
 		bytesRead    = read( upp_fd, outBuf, 256 );
 		
 		//sleep(1);
-		fprintf( stderr , "WROTE [%d] bytes out of [%d] bytes\n\n" , bytesWritten , strlen(buff) );
+		//fprintf( stderr , "WROTE [%d] bytes out of [%d] bytes\n\n" , bytesWritten , strlen(buff) );
 		fprintf( stderr , "READ  [%d] bytes out of [%d] bytes\n\n" , bytesRead    , strlen(buff) );
 		sleep(1);
 	}

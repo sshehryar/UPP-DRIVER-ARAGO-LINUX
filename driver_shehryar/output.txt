@@ -1,8 +1,0 @@
-UPP TESTER Version 0.16.
-
-WROTE [256] bytes out of [8192] bytes
-
-READ  [256] bytes out of [8192] bytes
-
-DATA-READ []
-
