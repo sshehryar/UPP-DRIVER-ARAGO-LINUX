@@ -1,4 +1,4 @@
-#uPP Linux For OMAP-L138/AM-1808
+#uPP Linux Driver Source Code For OMAP-L138/AM-1808
 =========================================================================================================================
 #### A Linux uPP driver source that works with arago linux and arch linux distros for OMAP-L138/AM-1808 based Custom Boards for data acquisition through an IP Camera.
 
